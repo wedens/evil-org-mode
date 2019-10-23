@@ -39,13 +39,25 @@
 (require 'evil)
 (require 'org)
 
+(defvar evil-org-agenda-mode-map (make-sparse-keymap))
+
+;;;###autoload
+(define-minor-mode evil-org-agenda-mode
+  "Buffer local minor mode for evil-org-agenda"
+  :init-value nil
+  :lighter " EvilOrgAgenda"
+  :keymap evil-org-agenda-mode-map
+  :group 'evil-org
+  (when evil-org-agenda-mode
+    (evil-normalize-keymaps)))
+
 (defun evil-org-agenda-set-keys ()
   "Set motion state keys for `org-agenda'."
   (evil-set-initial-state 'org-agenda-mode 'motion)
 
   ;; Horizontal movements have little use, thus we can override "f" and "t".
   ;; "w", "b", "e", "ge" and their upcase counterparts are preserved.
-  (evil-define-key 'motion org-agenda-mode-map
+  (evil-define-key 'motion evil-org-agenda-mode-map
     ;; Unused keys: D, X
 
     ;; open
