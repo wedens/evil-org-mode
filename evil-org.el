@@ -591,7 +591,7 @@ Includes tables, list items and subtrees."
   (save-excursion
     (when beg (goto-char beg))
     (let ((element (org-element-at-point)))
-      (when (or (not (memq (first element) org-element-greater-elements))
+      (when (or (not (memq (car element) org-element-greater-elements))
                 (and end (>= end (org-element-property :end element))))
         (setq element (evil-org-parent element)))
       (dotimes (_ (1- count))
@@ -605,7 +605,7 @@ Includes tables, list items and subtrees."
   (save-excursion
     (when beg (goto-char beg))
     (let ((element (org-element-at-point)))
-      (unless (memq (first element) org-element-greater-elements)
+      (unless (memq (car element) org-element-greater-elements)
         (setq element (evil-org-parent element)))
       (dotimes (_ (1- count))
         (setq element (evil-org-parent element)))
