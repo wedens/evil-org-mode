@@ -222,7 +222,7 @@ Optional argument ARGUMENTS arguments to pass to FUN."
     (forward-char))
   (org-end-of-line n))
 
-(defalias 'evil-org-beginning-of-line 'org-beginning-of-line)
+(defalias 'evil-org-beginning-of-line #'org-beginning-of-line)
 
 ;;; insertion commands
 (defun evil-org-insert-line (count)
@@ -637,59 +637,59 @@ Includes tables, list items and subtrees."
 (defun evil-org--populate-base-bindings ()
   "Bindings that are always available."
   (let ((motion-map (evil-get-auxiliary-keymap evil-org-mode-map 'motion t)))
-    (evil-redirect-digit-argument motion-map "0" 'evil-org-beginning-of-line))
+    (evil-redirect-digit-argument motion-map "0" #'evil-org-beginning-of-line))
   (evil-define-key 'motion evil-org-mode-map
-    (kbd "$") 'evil-org-end-of-line
-    (kbd ")") 'evil-org-forward-sentence
-    (kbd "(") 'evil-org-backward-sentence
-    (kbd "}") 'org-forward-paragraph
-    (kbd "{") 'org-backward-paragraph)
+    (kbd "$") #'evil-org-end-of-line
+    (kbd ")") #'evil-org-forward-sentence
+    (kbd "(") #'evil-org-backward-sentence
+    (kbd "}") #'org-forward-paragraph
+    (kbd "{") #'org-backward-paragraph)
   (evil-define-key 'normal evil-org-mode-map
-    (kbd "I") 'evil-org-insert-line
-    (kbd "A") 'evil-org-append-line
-    (kbd "o") 'evil-org-open-below
-    (kbd "O") 'evil-org-open-above
-    (kbd "d") 'evil-org-delete
-    (kbd "x") 'evil-org-delete-char
-    (kbd "X") 'evil-org-delete-backward-char
+    (kbd "I") #'evil-org-insert-line
+    (kbd "A") #'evil-org-append-line
+    (kbd "o") #'evil-org-open-below
+    (kbd "O") #'evil-org-open-above
+    (kbd "d") #'evil-org-delete
+    (kbd "x") #'evil-org-delete-char
+    (kbd "X") #'evil-org-delete-backward-char
     (kbd "<C-return>") (evil-org-define-eol-command
                         org-insert-heading-respect-content)
     (kbd "<C-S-return>") (evil-org-define-eol-command
                           org-insert-todo-heading-respect-content))
   (evil-define-key '(normal visual) evil-org-mode-map
-    (kbd "TAB") 'org-cycle
-    (kbd "<tab>") 'org-cycle
-    (kbd "<S-tab>") 'org-shifttab
-    (kbd "<") 'evil-org-<
-    (kbd ">") 'evil-org->))
+    (kbd "TAB") #'org-cycle
+    (kbd "<tab>") #'org-cycle
+    (kbd "<S-tab>") #'org-shifttab
+    (kbd "<") #'evil-org-<
+    (kbd ">") #'evil-org->))
 
 (defun evil-org--populate-textobjects-bindings ()
   "Text objects."
-  (let ((state '(visual operator)))
-    (evil-define-key state evil-org-mode-map "ae" 'evil-org-an-object)
-    (evil-define-key state evil-org-mode-map "ie" 'evil-org-inner-object)
-    (evil-define-key state evil-org-mode-map "aE" 'evil-org-an-element)
-    (evil-define-key state evil-org-mode-map "iE" 'evil-org-inner-element)
-    (evil-define-key state evil-org-mode-map "ir" 'evil-org-inner-greater-element)
-    (evil-define-key state evil-org-mode-map "ar" 'evil-org-a-greater-element)
-    (evil-define-key state evil-org-mode-map "aR" 'evil-org-a-subtree)
-    (evil-define-key state evil-org-mode-map "iR" 'evil-org-inner-subtree)))
+  (evil-define-key (visual operator) evil-org-mode-map
+    "ae" #'evil-org-an-object
+    "ie" #'evil-org-inner-object
+    "aE" #'evil-org-an-element
+    "iE" #'evil-org-inner-element
+    "ir" #'evil-org-inner-greater-element
+    "ar" #'evil-org-a-greater-element
+    "aR" #'evil-org-a-subtree
+    "iR" #'evil-org-inner-subtree))
 
 (defun evil-org--populate-insert-bindings ()
   "Define insert mode bindings."
   (evil-define-key 'insert evil-org-mode-map
-    (kbd "C-t") 'org-metaright
-    (kbd "C-d") 'org-metaleft))
+    (kbd "C-t") #'org-metaright
+    (kbd "C-d") #'org-metaleft))
 
 (defun evil-org--populate-navigation-bindings ()
   "Configures gj/gk/gh/gl for navigation."
   (let-alist evil-org-movement-bindings
     (evil-define-key 'motion evil-org-mode-map
-      (kbd (concat "g" .left)) 'org-up-element
-      (kbd (concat "g" .right)) 'org-down-element
-      (kbd (concat "g" .up)) 'org-backward-element
-      (kbd (concat "g" .down)) 'org-forward-element
-      (kbd (concat "g" (capitalize .left))) 'evil-org-top)))
+      (kbd (concat "g" .left)) #'org-up-element
+      (kbd (concat "g" .right)) #'org-down-element
+      (kbd (concat "g" .up)) #'org-backward-element
+      (kbd (concat "g" .down)) #'org-forward-element
+      (kbd (concat "g" (capitalize .left))) #'evil-org-top)))
 
 (defun evil-org--populate-additional-bindings ()
   "Bindings with meta and control."
@@ -698,18 +698,18 @@ Includes tables, list items and subtrees."
                      '(normal visual insert)
                    '(normal visual))))
       (evil-define-key state evil-org-mode-map
-        (kbd (concat "M-" .left)) 'org-metaleft
-        (kbd (concat "M-" .right)) 'org-metaright
-        (kbd (concat "M-" .up)) 'org-metaup
-        (kbd (concat "M-" .down)) 'org-metadown
-        (kbd (concat "M-" (capitalize .left))) 'org-shiftmetaleft
-        (kbd (concat "M-" (capitalize .right))) 'org-shiftmetaright
-        (kbd (concat "M-" (capitalize .up))) 'org-shiftmetaup
-        (kbd (concat "M-" (capitalize .down))) 'org-shiftmetadown
-        (kbd (concat "C-S-" .left)) 'org-shiftcontrolleft
-        (kbd (concat "C-S-" .right)) 'org-shiftcontrolright
-        (kbd (concat "C-S-" .up)) 'org-shiftcontrolup
-        (kbd (concat "C-S-" .down)) 'org-shiftcontroldown))))
+        (kbd (concat "M-" .left)) #'org-metaleft
+        (kbd (concat "M-" .right)) #'org-metaright
+        (kbd (concat "M-" .up)) #'org-metaup
+        (kbd (concat "M-" .down)) #'org-metadown
+        (kbd (concat "M-" (capitalize .left))) #'org-shiftmetaleft
+        (kbd (concat "M-" (capitalize .right))) #'org-shiftmetaright
+        (kbd (concat "M-" (capitalize .up))) #'org-shiftmetaup
+        (kbd (concat "M-" (capitalize .down))) #'org-shiftmetadown
+        (kbd (concat "C-S-" .left)) #'org-shiftcontrolleft
+        (kbd (concat "C-S-" .right)) #'org-shiftcontrolright
+        (kbd (concat "C-S-" .up)) #'org-shiftcontrolup
+        (kbd (concat "C-S-" .down)) #'org-shiftcontroldown))))
 
 (defun evil-org--populate-shift-bindings ()
   "Shift bindings that conflict with evil bindings."
@@ -731,7 +731,7 @@ Includes tables, list items and subtrees."
 (defun evil-org--populate-todo-bindings ()
   "Bindings for easy todo insertion."
   (evil-define-key 'normal evil-org-mode-map
-    (kbd "t") 'org-todo
+    (kbd "t") #'org-todo
     (kbd "T") (evil-org-define-eol-command org-insert-todo-heading)
     (kbd "M-t") (evil-org-define-eol-command org-insert-todo-subheading)))
 
@@ -786,8 +786,8 @@ Optional argument THEME list of themes. See evil-org-keytheme for a list of valu
     (when (memq 'navigation theme) (evil-org--populate-navigation-bindings))
     (when (memq 'insert theme) (evil-org--populate-insert-bindings))
     (when (memq 'return theme)
-      (evil-define-key 'insert evil-org-mode-map (kbd "RET") 'evil-org-return)
-      (define-key evil-org-mode-map (kbd "RET") 'evil-org-return))
+      (evil-define-key 'insert evil-org-mode-map (kbd "RET") #'evil-org-return)
+      (define-key evil-org-mode-map (kbd "RET") #'evil-org-return))
     (when (memq 'textobjects theme) (evil-org--populate-textobjects-bindings))
     (when (memq 'additional theme) (evil-org--populate-additional-bindings))
     (when (memq 'shift theme) (evil-org--populate-shift-bindings))
@@ -807,19 +807,19 @@ Optional argument THEME list of themes. See evil-org-keytheme for a list of valu
 ;;; vim-like confirm/abort for capture and src
 ;;; Taken from mwillsey (Max Willsey) on https://github.com/syl20bnr/spacemacs/pull/7400
 (with-eval-after-load 'org-capture
-  (define-key org-capture-mode-map [remap evil-save-and-close]          'org-capture-finalize)
-  (define-key org-capture-mode-map [remap evil-save-modified-and-close] 'org-capture-finalize)
-  (define-key org-capture-mode-map [remap evil-quit]                    'org-capture-kill))
+  (define-key org-capture-mode-map [remap evil-save-and-close]          #'org-capture-finalize)
+  (define-key org-capture-mode-map [remap evil-save-modified-and-close] #'org-capture-finalize)
+  (define-key org-capture-mode-map [remap evil-quit]                    #'org-capture-kill))
 
 (with-eval-after-load 'org-src
-  (define-key org-src-mode-map [remap evil-save-and-close]          'evil-org-edit-src-exit)
-  (define-key org-src-mode-map [remap evil-save-modified-and-close] 'evil-org-edit-src-exit)
-  (define-key org-src-mode-map [remap evil-quit]                    'org-edit-src-abort))
+  (define-key org-src-mode-map [remap evil-save-and-close]          #'evil-org-edit-src-exit)
+  (define-key org-src-mode-map [remap evil-save-modified-and-close] #'evil-org-edit-src-exit)
+  (define-key org-src-mode-map [remap evil-quit]                    #'org-edit-src-abort))
 
 (with-eval-after-load 'org-table
-  (define-key org-table-fedit-map [remap evil-save-and-close]          'org-table-fedit-finish)
-  (define-key org-table-fedit-map [remap evil-save-modified-and-close] 'org-table-fedit-finish)
-  (define-key org-table-fedit-map [remap evil-quit]                    'org-table-fedit-abort))
+  (define-key org-table-fedit-map [remap evil-save-and-close]          #'org-table-fedit-finish)
+  (define-key org-table-fedit-map [remap evil-save-modified-and-close] #'org-table-fedit-finish)
+  (define-key org-table-fedit-map [remap evil-quit]                    #'org-table-fedit-abort))
 
 (provide 'evil-org)
 ;;; evil-org.el ends here
