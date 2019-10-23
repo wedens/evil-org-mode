@@ -820,8 +820,5 @@ Optional argument THEME list of themes. See evil-org-keytheme for a list of valu
   (define-key org-table-fedit-map [remap evil-save-modified-and-close] 'org-table-fedit-finish)
   (define-key org-table-fedit-map [remap evil-quit]                    'org-table-fedit-abort))
 
-;; Set customizable theme
-(evil-org-set-key-theme evil-org-key-theme)
-
 (provide 'evil-org)
 ;;; evil-org.el ends here
