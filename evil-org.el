@@ -663,7 +663,7 @@ Includes tables, list items and subtrees."
 
 (defun evil-org--populate-textobjects-bindings ()
   "Text objects."
-  (evil-define-key (visual operator) evil-org-mode-map
+  (evil-define-key '(visual operator) evil-org-mode-map
     "ae" #'evil-org-an-object
     "ie" #'evil-org-inner-object
     "aE" #'evil-org-an-element
