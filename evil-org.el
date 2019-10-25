@@ -116,9 +116,7 @@ before calling `evil-org-set-keytheme'."
   :init-value nil
   :lighter " EvilOrg"
   :keymap evil-org-mode-map
-  :group 'evil-org
-  (when evil-org-mode
-    (evil-normalize-keymaps)))
+  :group 'evil-org)
 
 (with-eval-after-load 'evil-surround
   (add-to-list 'evil-surround-operator-alist '(evil-org-delete . delete)))
