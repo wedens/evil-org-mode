@@ -259,7 +259,12 @@ Passing in any prefix argument, executes the command without special behavior."
          (org-table-insert-row '(4))
          (evil-insert nil))
         ((and (memq 'item evil-org-special-o/O) (org-at-item-p)
-              (progn (end-of-visible-line)
+              ;; Fix o/O creating new list items in the middle of nested plain
+              ;; lists. Only has an effect when `evil-org-special-o/O' has
+              ;; `item' in it (not the default).
+              (progn (org-end-of-item)
+                     (backward-char 1)
+                     (evil-append nil)
                      (org-insert-item (org-at-item-checkbox-p))))
          (evil-insert nil))
         ((evil-open-below count))))
